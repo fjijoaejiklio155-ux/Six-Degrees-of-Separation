@@ -112,3 +112,104 @@ function createNode(graph, name, x, y, isCenter = false) {
 
 // 初期描画
 render();
+
+const characters = [
+  {
+    id: "you",
+    name: "自分",
+    zone: "日常",
+    desc: "ごく普通の社会人。趣味はカフェ巡りと軽い運動。",
+    neighbors: ["student", "office"],
+    links: ["student"] // 紹介できる
+  },
+
+  {
+    id: "student",
+    name: "学生リョウ",
+    zone: "学生",
+    desc: "大学生。バンド活動とイベント運営をしている。",
+    neighbors: ["you", "creator", "eventer"],
+    links: ["creator", "eventer"]
+  },
+
+  {
+    id: "office",
+    name: "会社員ミカ",
+    zone: "企業",
+    desc: "広告代理店勤務。企業案件を多く扱う。",
+    neighbors: ["you", "ceo", "planner"],
+    links: ["ceo"]
+  },
+
+  {
+    id: "creator",
+    name: "配信者ユウ",
+    zone: "ネット",
+    desc: "動画配信者。イベント出演経験あり。",
+    neighbors: ["student", "eventer", "artist"],
+    links: ["eventer", "artist"]
+  },
+
+  {
+    id: "eventer",
+    name: "イベント主催サラ",
+    zone: "イベント",
+    desc: "音楽イベントの主催者。幅広い人脈を持つ。",
+    neighbors: ["student", "creator", "artist"],
+    links: ["artist"]
+  },
+
+  {
+    id: "ceo",
+    name: "経営者タケシ",
+    zone: "企業",
+    desc: "IT企業の社長。広告業界とも関係あり。",
+    neighbors: ["office", "planner"],
+    links: ["planner"]
+  },
+
+  {
+    id: "planner",
+    name: "企画屋ケン",
+    zone: "企業",
+    desc: "企画会社所属。イベントや広告を横断的に担当。",
+    neighbors: ["office", "ceo", "artist"],
+    links: ["artist"]
+  },
+
+  {
+    id: "artist",
+    name: "アーティストレン",
+    zone: "芸能",
+    desc: "インディーズ出身のミュージシャン。イベント出演多数。",
+    neighbors: ["creator", "eventer", "planner", "idol"],
+    links: ["idol"]
+  },
+
+  {
+    id: "idol",
+    name: "アイドルナナ",
+    zone: "芸能",
+    desc: "人気上昇中のアイドル。メディア露出が増えている。",
+    neighbors: ["artist", "actor"],
+    links: ["actor"]
+  },
+
+  {
+    id: "actor",
+    name: "俳優ハル",
+    zone: "芸能",
+    desc: "映画やドラマに出演する実力派俳優。",
+    neighbors: ["idol"],
+    links: []
+  }
+];
+
+const zones = {
+  "学生": { x: 100, y: 100 },
+  "日常": { x: 200, y: 200 },
+  "企業": { x: 400, y: 200 },
+  "ネット": { x: 200, y: 100 },
+  "イベント": { x: 300, y: 150 },
+  "芸能": { x: 500, y: 100 }
+};
