@@ -213,3 +213,80 @@ const zones = {
   "イベント": { x: 300, y: 150 },
   "芸能": { x: 500, y: 100 }
 };
+
+let current = "you";
+
+function getChar(id) {
+  return characters.find(c => c.id === id);
+}
+
+function drawGraph() {
+  const graph = document.getElementById("graph");
+  graph.innerHTML = "";
+
+  const width = graph.clientWidth;
+  const height = graph.clientHeight;
+
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  graph.appendChild(svg);
+
+  // ▼ 位置を決める（簡易ランダム）
+  const positions = {};
+  characters.forEach(c => {
+    positions[c.id] = {
+      x: Math.random() * (width - 100) + 50,
+      y: Math.random() * (height - 100) + 50
+    };
+  });
+
+  // ▼ 線（neighbors）
+  characters.forEach(c => {
+    c.neighbors.forEach(n => {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", positions[c.id].x);
+      line.setAttribute("y1", positions[c.id].y);
+      line.setAttribute("x2", positions[n].x);
+      line.setAttribute("y2", positions[n].y);
+      svg.appendChild(line);
+    });
+  });
+
+  // ▼ ノード表示
+  characters.forEach(c => {
+    const pos = positions[c.id];
+    const isCurrent = c.id === current;
+
+    const el = document.createElement("div");
+    el.className = "node" + (isCurrent ? " center" : "");
+    el.style.left = pos.x + "px";
+    el.style.top = pos.y + "px";
+    el.innerText = c.name;
+
+    // ▼ クリック（移動）
+    el.onclick = () => tryMove(c.id);
+
+    graph.appendChild(el);
+  });
+}
+
+function tryMove(targetId) {
+  const currentChar = getChar(current);
+
+  if (currentChar.links.includes(targetId)) {
+    current = targetId;
+    render();
+  } else {
+    alert("その人には紹介してもらえない");
+  }
+}
+
+function render() {
+  const char = getChar(current);
+
+  document.getElementById("info").innerHTML = `
+    <h2>${char.name}</h2>
+    <p>${char.desc}</p>
+  `;
+
+  drawGraph();
+}
